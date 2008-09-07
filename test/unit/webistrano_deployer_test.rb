@@ -786,4 +786,13 @@ class Webistrano::DeployerTest < Test::Unit::TestCase
     Webistrano::Configuration.expects(:new).returns(mock_cap_config)
   end
   
+  def test_type_cast
+    assert_nil Webistrano::Deployer.type_cast('nil')
+    assert Webistrano::Deployer.type_cast('true')
+    assert_equal false, Webistrano::Deployer.type_cast('false')
+    assert_equal :foo, Webistrano::Deployer.type_cast(':foo')
+    assert_equal 'foo', Webistrano::Deployer.type_cast('foo')
+    assert_equal 'foo', Webistrano::Deployer.type_cast("'foo'")
+    assert_equal ['foo', :bar, 'bam'], Webistrano::Deployer.type_cast("[foo, :bar, 'bam']")
+  end
 end
